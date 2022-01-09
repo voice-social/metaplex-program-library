@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["delete_pack_voucher","Process DeletePackVoucher instruction"]]});

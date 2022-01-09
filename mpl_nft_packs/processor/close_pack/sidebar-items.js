@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["close_pack","Process ClosePack instruction"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["transfer_authority","Process TransferAuthority instruction"]]});

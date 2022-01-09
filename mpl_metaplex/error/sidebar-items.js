@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MetaplexError","Errors that may be returned by the Metaplex program."]]});

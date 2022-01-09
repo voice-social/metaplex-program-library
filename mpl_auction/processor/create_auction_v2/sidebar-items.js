@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["create_auction_v2",""]],"struct":[["CreateAuctionArgsV2",""]]});

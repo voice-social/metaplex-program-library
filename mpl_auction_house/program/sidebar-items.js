@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AuctionHouse","Type representing the program."]]});

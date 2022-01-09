@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["mpl_auction_house"] = [{"text":"impl Id for <a class=\"struct\" href=\"mpl_auction_house/program/struct.AuctionHouse.html\" title=\"struct mpl_auction_house::program::AuctionHouse\">AuctionHouse</a>","synthetic":false,"types":["mpl_auction_house::program::AuctionHouse"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

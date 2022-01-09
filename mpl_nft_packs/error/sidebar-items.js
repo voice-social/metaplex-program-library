@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["NFTPacksError","Errors that may be returned by the Metaplex NFT packs program."]]});

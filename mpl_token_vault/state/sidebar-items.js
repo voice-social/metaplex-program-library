@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["MAX_EXTERNAL_ACCOUNT_SIZE",""],["MAX_SAFETY_DEPOSIT_SIZE",""],["MAX_VAULT_SIZE",""],["PREFIX","prefix used for PDAs to avoid certain collision attacks (https://en.wikipedia.org/wiki/Collision_attack#Chosen-prefix_collision_attack)"]],"enum":[["Key",""],["VaultState",""]],"struct":[["ExternalPriceAccount",""],["SafetyDepositBox",""],["Vault",""]]});

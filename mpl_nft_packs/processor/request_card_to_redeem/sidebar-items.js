@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["burn_pack_voucher","Burn `PackVoucher` tokens."],["get_proving_process_data","Returns deserialized proving process data or initialized if it wasn’t initialized yet"],["request_card_for_redeem","Process RequestCardForRedeem instruction"]]});

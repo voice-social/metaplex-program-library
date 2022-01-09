@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AuctionError","Errors that may be returned by the Auction program."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["assert_common_checks",""],["process_init_auction_manager_v2",""]]});

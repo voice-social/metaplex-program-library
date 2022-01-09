@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["claim_bid",""]],"struct":[["ClaimBidArgs",""]]});

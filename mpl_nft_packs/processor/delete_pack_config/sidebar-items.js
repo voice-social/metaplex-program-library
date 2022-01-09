@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["delete_pack_config","Process DeletePackConfig instruction"]]});

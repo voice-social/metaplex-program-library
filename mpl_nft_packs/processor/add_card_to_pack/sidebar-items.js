@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["add_card_to_pack","Process AddCardToPack instruction"],["get_pack_config_data","Returns deserialized pack config data or initialized if it wasn’t initialized yet"]]});

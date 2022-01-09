@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["issue_end_auction",""],["process_end_auction",""]]});

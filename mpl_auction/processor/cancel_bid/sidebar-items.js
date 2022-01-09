@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["cancel_bid",""]],"struct":[["CancelBidArgs",""]]});

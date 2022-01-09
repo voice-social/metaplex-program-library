@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["deactivate_pack","Process Deactivate instruction"]]});

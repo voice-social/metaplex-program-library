@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["activate_pack","Process Activate instruction"]]});

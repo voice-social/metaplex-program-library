@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["issue_claim_bid",""],["process_claim_bid",""]]});

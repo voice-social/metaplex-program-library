@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["EXTENDED",""],["PREFIX","Prefix used in PDA derivations to avoid collisions with other programs."]],"fn":[["check_id","Confirms that a given pubkey is equivalent to the program ID"],["id","Returns the program ID"]],"mod":[["errors",""],["instruction",""],["processor",""]],"static":[["ID","The static program ID"]]});
