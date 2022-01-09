@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["process_deprecated_create_metadata_accounts",""],["process_deprecated_update_metadata_accounts","Update existing account instruction"]]});

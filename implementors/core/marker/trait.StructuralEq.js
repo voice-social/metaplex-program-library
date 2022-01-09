@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["mpl_token_metadata"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.57.0/core/marker/trait.StructuralEq.html\" title=\"trait core::marker::StructuralEq\">StructuralEq</a> for <a class=\"enum\" href=\"mpl_token_metadata/error/enum.MetadataError.html\" title=\"enum mpl_token_metadata::error::MetadataError\">MetadataError</a>","synthetic":false,"types":["mpl_token_metadata::error::MetadataError"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["mpl_token_metadata"];

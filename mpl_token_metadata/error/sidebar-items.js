@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MetadataError","Errors that may be returned by the Metadata program."]]});
