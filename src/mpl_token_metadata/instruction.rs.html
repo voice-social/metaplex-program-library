@@ -864,7 +864,6 @@
 <span id="864">864</span>
 <span id="865">865</span>
 <span id="866">866</span>
-<span id="867">867</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">deprecated_instruction</span>::{<span class="ident">MintPrintingTokensViaTokenArgs</span>, <span class="ident">SetReservationListArgs</span>},
     <span class="ident">state</span>::{<span class="ident">Collection</span>, <span class="ident">Creator</span>, <span class="ident">Data</span>, <span class="ident">DataV2</span>, <span class="ident">Uses</span>, <span class="ident">EDITION</span>, <span class="ident">EDITION_MARKER_BIT_SIZE</span>, <span class="ident">PREFIX</span>},
@@ -1614,10 +1613,10 @@
 }
 
 <span class="doccomment">/// # Verify Collection</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// If and MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Accounts:</span>
+<span class="doccomment">/// ### Accounts:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///   0. `[writable]` Metadata account</span>
 <span class="doccomment">///   1. `[signer]` Collection Update authority</span>
@@ -1649,17 +1648,11 @@
     }
 }
 
-<span class="doccomment">/// Verify Collection</span>
-<span class="doccomment">/// If and MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection</span>
+<span class="doccomment">/// # Utilize</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Accounts:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///   0. `[writable]` Metadata account</span>
-<span class="doccomment">///   1. `[signer]` Collection Update authority</span>
-<span class="doccomment">///   2. `[signer]` payer</span>
-<span class="doccomment">///   3. `[]` Mint of the Collection</span>
-<span class="doccomment">///   4. `[]` Metadata Account of the Collection</span>
-<span class="doccomment">///   5. `[]` MasterEdition2 Account of the Collection Token</span>
+<span class="doccomment">/// ### Accounts:</span>
+
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">utilize</span>(
     <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
@@ -1684,11 +1677,16 @@
     }
 }
 
-<span class="doccomment">/// Approve Use Authority</span>
+<span class="doccomment">/// # Approve Use Authority</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Approve another account to call [use] this NFT</span>
-<span class="doccomment">/// Args:</span>
-<span class="doccomment">///     See: [ApproveUseAuthorityArgs]</span>
-<span class="doccomment">/// Accounts:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ### Args:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See: [ApproveUseAuthorityArgs]</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// ### Accounts:</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///   0. `[writable]` Use Authority Record PDA</span>
 <span class="doccomment">///   1. `[signer]` Owner(Payer)</span>
 <span class="doccomment">///   2. `[signer]` Payer</span>
