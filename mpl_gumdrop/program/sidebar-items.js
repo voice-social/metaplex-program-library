@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MerkleDistributor","Type representing the program."]]});

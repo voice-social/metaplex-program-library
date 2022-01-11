@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TokenEntangler","Type representing the program."]]});

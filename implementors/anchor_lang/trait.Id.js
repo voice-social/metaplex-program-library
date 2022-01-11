@@ -1,3 +1,6 @@
 (function() {var implementors = {};
 implementors["mpl_auction_house"] = [{"text":"impl Id for <a class=\"struct\" href=\"mpl_auction_house/program/struct.AuctionHouse.html\" title=\"struct mpl_auction_house::program::AuctionHouse\">AuctionHouse</a>","synthetic":false,"types":["mpl_auction_house::program::AuctionHouse"]}];
+implementors["mpl_gumdrop"] = [{"text":"impl Id for <a class=\"struct\" href=\"mpl_gumdrop/program/struct.MerkleDistributor.html\" title=\"struct mpl_gumdrop::program::MerkleDistributor\">MerkleDistributor</a>","synthetic":false,"types":["mpl_gumdrop::program::MerkleDistributor"]}];
+implementors["mpl_token_entangler"] = [{"text":"impl Id for <a class=\"struct\" href=\"mpl_token_entangler/program/struct.TokenEntangler.html\" title=\"struct mpl_token_entangler::program::TokenEntangler\">TokenEntangler</a>","synthetic":false,"types":["mpl_token_entangler::program::TokenEntangler"]}];
+implementors["nft_candy_machine"] = [{"text":"impl Id for <a class=\"struct\" href=\"nft_candy_machine/program/struct.NftCandyMachineV2.html\" title=\"struct nft_candy_machine::program::NftCandyMachineV2\">NftCandyMachineV2</a>","synthetic":false,"types":["nft_candy_machine::program::NftCandyMachineV2"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

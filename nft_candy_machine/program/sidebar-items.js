@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NftCandyMachineV2","Type representing the program."]]});

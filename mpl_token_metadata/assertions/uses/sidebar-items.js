@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["assert_valid_use",""]]});
+initSidebarItems({"fn":[["assert_valid_use",""],["process_use_authority_validation",""]]});

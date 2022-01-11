@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["mpl_gumdrop"] = [{"text":"impl Event for <a class=\"struct\" href=\"mpl_gumdrop/struct.ClaimedEvent.html\" title=\"struct mpl_gumdrop::ClaimedEvent\">ClaimedEvent</a>","synthetic":false,"types":["mpl_gumdrop::ClaimedEvent"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

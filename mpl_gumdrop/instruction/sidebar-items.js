@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["state","Instruction struct definitions for `#[state]` methods."]],"struct":[["Claim","Instruction."],["ClaimCandy","Instruction."],["ClaimEdition","Instruction."],["CloseDistributor","Instruction."],["CloseDistributorTokenAccount","Instruction."],["NewDistributor","Instruction."]]});

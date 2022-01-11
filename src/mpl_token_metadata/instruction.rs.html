@@ -864,6 +864,37 @@
 <span id="864">864</span>
 <span id="865">865</span>
 <span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">deprecated_instruction</span>::{<span class="ident">MintPrintingTokensViaTokenArgs</span>, <span class="ident">SetReservationListArgs</span>},
     <span class="ident">state</span>::{<span class="ident">Collection</span>, <span class="ident">Creator</span>, <span class="ident">Data</span>, <span class="ident">DataV2</span>, <span class="ident">Uses</span>, <span class="ident">EDITION</span>, <span class="ident">EDITION_MARKER_BIT_SIZE</span>, <span class="ident">PREFIX</span>},
@@ -930,14 +961,13 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">BorshSerialize</span>, <span class="ident">BorshDeserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApproveUseAuthorityArgs</span> {
-    <span class="kw">pub</span> <span class="ident">use_authority_record_bump_seed</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">number_of_uses</span>: <span class="ident">u16</span>,
+    <span class="kw">pub</span> <span class="ident">number_of_uses</span>: <span class="ident">u64</span>,
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">BorshSerialize</span>, <span class="ident">BorshDeserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UseArgs</span> {
-    <span class="kw">pub</span> <span class="ident">number_of_uses</span>: <span class="ident">u16</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UtilizeArgs</span> {
+    <span class="kw">pub</span> <span class="ident">number_of_uses</span>: <span class="ident">u64</span>,
 }
 
 <span class="doccomment">/// Instructions supported by the Metadata program.</span>
@@ -1167,30 +1197,17 @@
     <span class="doccomment">///   7. `[]` System program</span>
     <span class="doccomment">///   8. `[]` Rent info</span>
     <span class="ident">CreateMasterEditionV3</span>(<span class="ident">CreateMasterEditionArgs</span>),
-    <span class="doccomment">/// If and MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection</span>
-    <span class="doccomment">///   0. `[writable]` Metadata account</span>
-    <span class="doccomment">///   1. `[signer]` Collection Update authority</span>
-    <span class="doccomment">///   2. `[signer]` payer</span>
-    <span class="doccomment">///   3. `[]` Mint of the Collection</span>
-    <span class="doccomment">///   4. `[]` Metadata Account of the Collection</span>
-    <span class="doccomment">///   5. `[]` MasterEdition2 Account of the Collection Token</span>
+    <span class="doccomment">///See [verify_collection] for Doc</span>
     <span class="ident">VerifyCollection</span>,
-    <span class="doccomment">/// Utilize or Use an NFT , burns the NFT and returns the lamports to the update authority if the use method is burn and its out of uses.</span>
-    <span class="doccomment">/// Use Authority can be the Holder of the NFT, or a Delegated Use Authority.</span>
-    <span class="doccomment">///   0. `[writable]` Metadata account</span>
-    <span class="doccomment">///   1. `[writable]` Token Account Of NFT</span>
-    <span class="doccomment">///   2. `[writable]` Mint of the Metadata</span>
-    <span class="doccomment">///   3. `[writable]` Use Authority Record PDA</span>
-    <span class="doccomment">///   2. `[signer]` A Use Authority</span>
-    <span class="doccomment">///   3. `[]` Token Account Owner</span>
-    <span class="doccomment">///   4. `[]` Update Authority</span>
-    <span class="doccomment">///   5. `[]` Token program</span>
-    <span class="doccomment">///   6. `[]` System program</span>
-    <span class="doccomment">///   7. `[]` Rent info</span>
-    <span class="ident">Use</span>(<span class="ident">UseArgs</span>),
-    <span class="doccomment">/// See [approve_use_authority] for Doc</span>
+    <span class="doccomment">///See [utilize] for Doc</span>
+    <span class="ident">Utilize</span>(<span class="ident">UtilizeArgs</span>),
+
+    <span class="doccomment">///See [approve_use_authority] for Doc</span>
     <span class="ident">ApproveUseAuthority</span>(<span class="ident">ApproveUseAuthorityArgs</span>),
+    <span class="doccomment">///See [revoke_use_authority] for Doc</span>
     <span class="ident">RevokeUseAuthority</span>,
+
+    <span class="ident">UnverifyCollection</span>,
 }
 
 <span class="doccomment">/// Creates an CreateMetadataAccounts instruction</span>
@@ -1369,7 +1386,7 @@
 
 <span class="doccomment">/// creates a create_master_edition instruction</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="doccomment">/// [deprecated(since=&quot;1.1.0&quot;, note=&quot;please use `create_master_edition_v2` instead&quot;)]</span>
+<span class="doccomment">/// [deprecated(since=&quot;1.1.0&quot;, note=&quot;please use `create_master_edition_v3` instead&quot;)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_master_edition</span>(
     <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
     <span class="ident">edition</span>: <span class="ident">Pubkey</span>,
@@ -1403,7 +1420,6 @@
 
 <span class="doccomment">/// creates a create_master_edition instruction</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="doccomment">/// [deprecated(since=&quot;1.1.0&quot;, note=&quot;please use `create_master_edition_v2` instead&quot;)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_master_edition_v3</span>(
     <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
     <span class="ident">edition</span>: <span class="ident">Pubkey</span>,
@@ -1420,7 +1436,7 @@
         <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">update_authority</span>, <span class="bool-val">true</span>),
         <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">mint_authority</span>, <span class="bool-val">true</span>),
         <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
-        <span class="ident">AccountMeta::new</span>(<span class="ident">metadata</span>, <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new</span>(<span class="ident">metadata</span>, <span class="bool-val">true</span>),
         <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_token::id</span>(), <span class="bool-val">false</span>),
         <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">solana_program::system_program::id</span>(), <span class="bool-val">false</span>),
         <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">sysvar::rent::id</span>(), <span class="bool-val">false</span>),
@@ -1429,40 +1445,7 @@
     <span class="ident">Instruction</span> {
         <span class="ident">program_id</span>,
         <span class="ident">accounts</span>,
-        <span class="ident">data</span>: <span class="ident">MetadataInstruction::CreateMasterEdition</span>(<span class="ident">CreateMasterEditionArgs</span> { <span class="ident">max_supply</span> })
-            .<span class="ident">try_to_vec</span>()
-            .<span class="ident">unwrap</span>(),
-    }
-}
-
-<span class="doccomment">/// creates a create_master_edition instruction</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_master_edition_v2</span>(
-    <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">edition</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">mint</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">update_authority</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">mint_authority</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">metadata</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">payer</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">max_supply</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">Instruction</span> {
-    <span class="kw">let</span> <span class="ident">accounts</span> <span class="op">=</span> <span class="macro">vec!</span>[
-        <span class="ident">AccountMeta::new</span>(<span class="ident">edition</span>, <span class="bool-val">false</span>),
-        <span class="ident">AccountMeta::new</span>(<span class="ident">mint</span>, <span class="bool-val">false</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">update_authority</span>, <span class="bool-val">true</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">mint_authority</span>, <span class="bool-val">true</span>),
-        <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">metadata</span>, <span class="bool-val">true</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_token::id</span>(), <span class="bool-val">false</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">solana_program::system_program::id</span>(), <span class="bool-val">false</span>),
-        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">sysvar::rent::id</span>(), <span class="bool-val">false</span>),
-    ];
-
-    <span class="ident">Instruction</span> {
-        <span class="ident">program_id</span>,
-        <span class="ident">accounts</span>,
-        <span class="ident">data</span>: <span class="ident">MetadataInstruction::CreateMasterEdition</span>(<span class="ident">CreateMasterEditionArgs</span> { <span class="ident">max_supply</span> })
+        <span class="ident">data</span>: <span class="ident">MetadataInstruction::CreateMasterEditionV3</span>(<span class="ident">CreateMasterEditionArgs</span> { <span class="ident">max_supply</span> })
             .<span class="ident">try_to_vec</span>()
             .<span class="ident">unwrap</span>(),
     }
@@ -1614,7 +1597,7 @@
 
 <span class="doccomment">/// # Verify Collection</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If and MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection</span>
+<span class="doccomment">/// If a MetadataAccount Has a Collection allow the UpdateAuthority of the Collection to Verify the NFT Belongs in the Collection</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ### Accounts:</span>
 <span class="doccomment">///</span>
@@ -1648,54 +1631,87 @@
     }
 }
 
-<span class="doccomment">/// # Utilize</span>
+<span class="doccomment">///# Utilize</span>
 <span class="doccomment">///</span>
+<span class="doccomment">///Utilize or Use an NFT , burns the NFT and returns the lamports to the update authority if the use method is burn and its out of uses.</span>
+<span class="doccomment">///Use Authority can be the Holder of the NFT, or a Delegated Use Authority.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ### Accounts:</span>
+<span class="doccomment">///### Accounts:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///   0. `[writable]` Metadata account</span>
+<span class="doccomment">///   1. `[writable]` Token Account Of NFT</span>
+<span class="doccomment">///   2. `[writable]` Mint of the Metadata</span>
+<span class="doccomment">///   2. `[signer]` A Use Authority / Can be the current Owner of the NFT</span>
+<span class="doccomment">///   3. `[signer]` Payer</span>
+<span class="doccomment">///   4. `[]` Owner</span>
+<span class="doccomment">///   5. `[]` Token program</span>
+<span class="doccomment">///   6. `[]` Associated Token program</span>
+<span class="doccomment">///   7. `[]` System program</span>
+<span class="doccomment">///   8. `[]` Rent info</span>
+<span class="doccomment">///   9. Optional `[writable]` Use Authority Record PDA If present the program Assumes a delegated use authority</span>
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">utilize</span>(
     <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
     <span class="ident">metadata</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">collection_authority</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">token_account</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">mint</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">use_authority_record_pda</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Pubkey</span><span class="op">&gt;</span>,
+    <span class="ident">use_authority</span>: <span class="ident">Pubkey</span>,
     <span class="ident">payer</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">collection_mint</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">collection</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">collection_master_edition_account</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">owner</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">burner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Pubkey</span><span class="op">&gt;</span>,
+    <span class="ident">number_of_uses</span>: <span class="ident">u64</span>,
 ) -&gt; <span class="ident">Instruction</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">accounts</span> <span class="op">=</span> <span class="macro">vec!</span>[
+        <span class="ident">AccountMeta::new</span>(<span class="ident">metadata</span>, <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new</span>(<span class="ident">token_account</span>, <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new</span>(<span class="ident">mint</span>, <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new</span>(<span class="ident">use_authority</span>, <span class="bool-val">true</span>),
+        <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
+        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">owner</span>, <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_token::id</span>(), <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_associated_token_account::id</span>(), <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">solana_program::system_program::id</span>(), <span class="bool-val">false</span>),
+        <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">sysvar::rent::id</span>(), <span class="bool-val">false</span>),
+    ];
+    <span class="kw">if</span> <span class="ident">use_authority_record_pda</span>.<span class="ident">is_some</span>() {
+        <span class="ident">accounts</span>.<span class="ident">push</span>(<span class="ident">AccountMeta::new</span>(<span class="ident">use_authority_record_pda</span>.<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
+    }
+    <span class="kw">if</span> <span class="ident">burner</span>.<span class="ident">is_some</span>() {
+        <span class="ident">accounts</span>.<span class="ident">push</span>(<span class="ident">AccountMeta::new_readonly</span>(<span class="ident">burner</span>.<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
+    }
+
     <span class="ident">Instruction</span> {
         <span class="ident">program_id</span>,
-        <span class="ident">accounts</span>: <span class="macro">vec!</span>[
-            <span class="ident">AccountMeta::new</span>(<span class="ident">metadata</span>, <span class="bool-val">false</span>),
-            <span class="ident">AccountMeta::new</span>(<span class="ident">collection_authority</span>, <span class="bool-val">true</span>),
-            <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
-            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">collection_mint</span>, <span class="bool-val">false</span>),
-            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">collection</span>, <span class="bool-val">false</span>),
-            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">collection_master_edition_account</span>, <span class="bool-val">false</span>),
-        ],
-        <span class="ident">data</span>: <span class="ident">MetadataInstruction::VerifyCollection</span>.<span class="ident">try_to_vec</span>().<span class="ident">unwrap</span>(),
+        <span class="ident">accounts</span>,
+        <span class="ident">data</span>: <span class="ident">MetadataInstruction::Utilize</span>(<span class="ident">UtilizeArgs</span> { <span class="ident">number_of_uses</span> })
+            .<span class="ident">try_to_vec</span>()
+            .<span class="ident">unwrap</span>(),
     }
 }
 
 <span class="doccomment">///# Approve Use Authority</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Approve another account to call [use] this NFT</span>
+<span class="doccomment">///Approve another account to call [utilize] on this NFT</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///### Args:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See: [ApproveUseAuthorityArgs]</span>
+<span class="doccomment">///See: [ApproveUseAuthorityArgs]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///### Accounts:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///   0. `[writable]` Use Authority Record PDA</span>
-<span class="doccomment">///   1. `[signer]` Owner(Payer)</span>
-<span class="doccomment">///   2. `[signer]` Payer</span>
-<span class="doccomment">///   3. `[]` A Use Authority</span>
-<span class="doccomment">///   4. `[]` Owned Token Account Of Mint</span>
+<span class="doccomment">///   1. `[writable]` Owned Token Account Of Mint</span>
+<span class="doccomment">///   2. `[signer]` Owner</span>
+<span class="doccomment">///   3. `[signer]` Payer</span>
+<span class="doccomment">///   4. `[]` A Use Authority</span>
 <span class="doccomment">///   5. `[]` Metadata account</span>
 <span class="doccomment">///   6. `[]` Mint of Metadata</span>
-<span class="doccomment">///   7. `[]` System program</span>
-<span class="doccomment">///   8. `[]` Rent info</span>
+<span class="doccomment">///   7. `[]` Program As Signer (Burner)</span>
+<span class="doccomment">///   8. `[]` Token program</span>
+<span class="doccomment">///   9. `[]` System program</span>
+<span class="doccomment">///   10. `[]` Rent info</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">approve_use_authority</span>(
     <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
@@ -1706,8 +1722,8 @@
     <span class="ident">owner_token_account</span>: <span class="ident">Pubkey</span>,
     <span class="ident">metadata</span>: <span class="ident">Pubkey</span>,
     <span class="ident">mint</span>: <span class="ident">Pubkey</span>,
-    <span class="ident">number_of_uses</span>: <span class="ident">u16</span>,
-    <span class="ident">use_authority_record_bump_seed</span>: <span class="ident">u8</span>,
+    <span class="ident">burner</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">number_of_uses</span>: <span class="ident">u64</span>,
 ) -&gt; <span class="ident">Instruction</span> {
     <span class="ident">Instruction</span> {
         <span class="ident">program_id</span>,
@@ -1715,19 +1731,65 @@
             <span class="ident">AccountMeta::new</span>(<span class="ident">use_authority_record</span>, <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new</span>(<span class="ident">owner</span>, <span class="bool-val">true</span>),
             <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
-            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">user</span>, <span class="bool-val">true</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">user</span>, <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">owner_token_account</span>, <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">metadata</span>, <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">mint</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">burner</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_token::id</span>(), <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">solana_program::system_program::id</span>(), <span class="bool-val">false</span>),
             <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">sysvar::rent::id</span>(), <span class="bool-val">false</span>),
         ],
-        <span class="ident">data</span>: <span class="ident">MetadataInstruction::ApproveUseAuthority</span>(<span class="ident">ApproveUseAuthorityArgs</span> {
-            <span class="ident">use_authority_record_bump_seed</span>,
-            <span class="ident">number_of_uses</span>,
-        })
-        .<span class="ident">try_to_vec</span>()
-        .<span class="ident">unwrap</span>(),
+        <span class="ident">data</span>: <span class="ident">MetadataInstruction::ApproveUseAuthority</span>(<span class="ident">ApproveUseAuthorityArgs</span> { <span class="ident">number_of_uses</span> })
+            .<span class="ident">try_to_vec</span>()
+            .<span class="ident">unwrap</span>(),
+    }
+}
+
+<span class="comment">//# Revoke Use Authority</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///Revoke account to call [utilize] on this NFT</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///### Accounts:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///   0. `[writable]` Use Authority Record PDA</span>
+<span class="doccomment">///   1. `[writable]` Owned Token Account Of Mint</span>
+<span class="doccomment">///   2. `[signer]` Owner</span>
+<span class="doccomment">///   3. `[signer]` Payer</span>
+<span class="doccomment">///   4. `[]` A Use Authority</span>
+<span class="doccomment">///   5. `[]` Metadata account</span>
+<span class="doccomment">///   6. `[]` Mint of Metadata</span>
+<span class="doccomment">///   7. `[]` Token program</span>
+<span class="doccomment">///   8. `[]` System program</span>
+<span class="doccomment">///   9. `[]` Rent info</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revoke_use_authority</span>(
+    <span class="ident">program_id</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">use_authority_record</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">user</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">owner</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">payer</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">owner_token_account</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">metadata</span>: <span class="ident">Pubkey</span>,
+    <span class="ident">mint</span>: <span class="ident">Pubkey</span>,
+) -&gt; <span class="ident">Instruction</span> {
+    <span class="ident">Instruction</span> {
+        <span class="ident">program_id</span>,
+        <span class="ident">accounts</span>: <span class="macro">vec!</span>[
+            <span class="ident">AccountMeta::new</span>(<span class="ident">use_authority_record</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new</span>(<span class="ident">owner</span>, <span class="bool-val">true</span>),
+            <span class="ident">AccountMeta::new</span>(<span class="ident">payer</span>, <span class="bool-val">true</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">user</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">owner_token_account</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">metadata</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">mint</span>, <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">spl_token::id</span>(), <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">solana_program::system_program::id</span>(), <span class="bool-val">false</span>),
+            <span class="ident">AccountMeta::new_readonly</span>(<span class="ident">sysvar::rent::id</span>(), <span class="bool-val">false</span>),
+        ],
+        <span class="ident">data</span>: <span class="ident">MetadataInstruction::RevokeUseAuthority</span>
+            .<span class="ident">try_to_vec</span>()
+            .<span class="ident">unwrap</span>(),
     }
 }
 </code></pre></div>
