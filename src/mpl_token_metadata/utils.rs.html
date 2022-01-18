@@ -1132,6 +1132,17 @@
 <span id="1132">1132</span>
 <span id="1133">1133</span>
 <span id="1134">1134</span>
+<span id="1135">1135</span>
+<span id="1136">1136</span>
+<span id="1137">1137</span>
+<span id="1138">1138</span>
+<span id="1139">1139</span>
+<span id="1140">1140</span>
+<span id="1141">1141</span>
+<span id="1142">1142</span>
+<span id="1143">1143</span>
+<span id="1144">1144</span>
+<span id="1145">1145</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">assertions</span>::{<span class="ident">collection::assert_collection_update_is_valid</span>, <span class="ident">uses::assert_valid_use</span>},
     <span class="ident">error::MetadataError</span>,
@@ -1139,7 +1150,7 @@
         <span class="ident">get_reservation_list</span>, <span class="ident">Data</span>, <span class="ident">DataV2</span>, <span class="ident">EditionMarker</span>, <span class="ident">Key</span>, <span class="ident">MasterEditionV1</span>, <span class="ident">Metadata</span>,
         <span class="ident">TokenStandard</span>, <span class="ident">Uses</span>, <span class="ident">EDITION</span>, <span class="ident">EDITION_MARKER_BIT_SIZE</span>, <span class="ident">MAX_CREATOR_LIMIT</span>, <span class="ident">MAX_EDITION_LEN</span>,
         <span class="ident">MAX_EDITION_MARKER_SIZE</span>, <span class="ident">MAX_MASTER_EDITION_LEN</span>, <span class="ident">MAX_METADATA_LEN</span>, <span class="ident">MAX_NAME_LENGTH</span>,
-        <span class="ident">MAX_SYMBOL_LENGTH</span>, <span class="ident">MAX_URI_LENGTH</span>, <span class="ident">PREFIX</span>, <span class="ident">USER</span>,
+        <span class="ident">MAX_SYMBOL_LENGTH</span>, <span class="ident">MAX_URI_LENGTH</span>, <span class="ident">PREFIX</span>,
     },
 };
 <span class="kw">use</span> <span class="ident">arrayref</span>::{<span class="ident">array_mut_ref</span>, <span class="ident">array_ref</span>, <span class="ident">array_refs</span>, <span class="ident">mut_array_refs</span>};
@@ -2090,6 +2101,17 @@
 <span class="doccomment">/// Pads the string to the desired size with `0u8`s.</span>
 <span class="doccomment">/// NOTE: it is assumed that the string&#39;s size is never larger than the given size.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">puffed_out_string</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array_of_zeroes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
+    <span class="kw">let</span> <span class="ident">puff_amount</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">-</span> <span class="ident">s</span>.<span class="ident">len</span>();
+    <span class="kw">while</span> <span class="ident">array_of_zeroes</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">puff_amount</span> {
+        <span class="ident">array_of_zeroes</span>.<span class="ident">push</span>(<span class="number">0u8</span>);
+    }
+    <span class="ident">s</span>.<span class="ident">clone</span>() <span class="op">+</span> <span class="ident">std::str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">array_of_zeroes</span>).<span class="ident">unwrap</span>()
+}
+
+<span class="doccomment">/// Pads the string to the desired size with `0u8`s.</span>
+<span class="doccomment">/// NOTE: it is assumed that the string&#39;s size is never larger than the given size.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zero_account</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array_of_zeroes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">let</span> <span class="ident">puff_amount</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">-</span> <span class="ident">s</span>.<span class="ident">len</span>();
     <span class="kw">while</span> <span class="ident">array_of_zeroes</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">puff_amount</span> {

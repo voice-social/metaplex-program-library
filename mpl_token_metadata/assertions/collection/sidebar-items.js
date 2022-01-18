@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["assert_collection_update_is_valid",""],["assert_collection_verify_if_valid",""]]});
+initSidebarItems({"fn":[["assert_collection_update_is_valid",""],["assert_collection_verify_is_valid",""],["assert_has_collection_authority",""],["assert_is_collection_delegated_authority",""]]});

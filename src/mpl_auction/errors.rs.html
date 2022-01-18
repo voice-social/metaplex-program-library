@@ -153,6 +153,10 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
 </pre><pre class="rust"><code><span class="kw">use</span> {
     <span class="ident">num_derive::FromPrimitive</span>,
     <span class="ident">solana_program</span>::{
@@ -289,6 +293,10 @@
     <span class="doccomment">/// Gap tick size percentage must be between 0 and 100</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Gap tick size percentage must be between 0 and 100&quot;</span>)]</span>
     <span class="ident">InvalidGapTickSizePercentage</span>,
+
+    <span class="doccomment">/// Gap tick size percentage must be between 0 and 100</span>
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Bidder Pot Token Must be a new account&quot;</span>)]</span>
+    <span class="ident">BidderPotTokenAccountMustBeNew</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PrintProgramError</span> <span class="kw">for</span> <span class="ident">AuctionError</span> {

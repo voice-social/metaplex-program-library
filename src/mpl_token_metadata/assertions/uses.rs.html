@@ -61,11 +61,13 @@
 <span id="61">61</span>
 <span id="62">62</span>
 <span id="63">63</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{<span class="ident">program_error::ProgramError</span>, <span class="ident">account_info::AccountInfo</span>, <span class="ident">pubkey::Pubkey</span>};
+<span id="64">64</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{<span class="ident">account_info::AccountInfo</span>, <span class="ident">program_error::ProgramError</span>, <span class="ident">pubkey::Pubkey</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">error::MetadataError</span>,
-    <span class="ident">state</span>::{<span class="ident">UseMethod</span>, <span class="ident">Uses</span>, <span class="ident">USER</span>, <span class="ident">PREFIX</span>}, <span class="ident">utils::assert_derivation</span>,
+    <span class="ident">state</span>::{<span class="ident">UseMethod</span>, <span class="ident">Uses</span>, <span class="ident">PREFIX</span>, <span class="ident">USER</span>},
+    <span class="ident">utils::assert_derivation</span>,
 };
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assert_valid_use</span>(
@@ -110,7 +112,7 @@
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MetadataError::UseAuthorityRecordAlreadyExists</span>.<span class="ident">into</span>());
         }
     } <span class="kw">else</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">record_info_empty</span> {
+        <span class="kw">if</span> <span class="ident">record_info_empty</span> <span class="op">|</span><span class="op">|</span> <span class="ident">use_authority_record_info</span>.<span class="ident">data</span>.<span class="ident">borrow</span>()[<span class="number">0</span>] <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MetadataError::UseAuthorityRecordAlreadyRevoked</span>.<span class="ident">into</span>());
         }
     }

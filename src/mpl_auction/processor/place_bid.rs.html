@@ -334,6 +334,11 @@
 <span id="334">334</span>
 <span id="335">335</span>
 <span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Places a bid on a running auction, the logic here implements a standard English auction</span>
 <span class="doccomment">//! mechanism, once the auction starts, new bids can be made until 10 minutes has passed with no</span>
 <span class="doccomment">//! new bid. At this point the auction ends.</span>
@@ -347,6 +352,7 @@
 <span class="doccomment">//! are not winning bids from the state.</span>
 
 <span class="kw">use</span> <span class="ident">borsh::try_to_vec_with_schema</span>;
+<span class="kw">use</span> <span class="ident">solana_program::system_program</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">errors::AuctionError</span>,
@@ -355,10 +361,10 @@
     },
     <span class="ident">utils</span>::{
         <span class="ident">assert_derivation</span>, <span class="ident">assert_initialized</span>, <span class="ident">assert_owned_by</span>, <span class="ident">assert_signer</span>,
-        <span class="ident">assert_token_program_matches_package</span>, <span class="ident">create_or_allocate_account_raw</span>, <span class="ident">spl_token_transfer</span>,
-        <span class="ident">TokenTransferParams</span>,
+        <span class="ident">assert_token_program_matches_package</span>, <span class="ident">assert_uninitialized</span>, <span class="ident">create_or_allocate_account_raw</span>,
+        <span class="ident">spl_token_create_account</span>, <span class="ident">spl_token_transfer</span>, <span class="ident">TokenCreateAccount</span>, <span class="ident">TokenTransferParams</span>,
     },
-    <span class="ident">EXTENDED</span>, <span class="ident">PREFIX</span>,
+    <span class="ident">BIDDER_POT_TOKEN</span>, <span class="ident">EXTENDED</span>, <span class="ident">PREFIX</span>,
 };
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::BIDDER_METADATA_LEN</span>;
@@ -444,7 +450,6 @@
     }
 
     <span class="ident">assert_owned_by</span>(<span class="ident">accounts</span>.<span class="ident">mint</span>, <span class="kw-2">&amp;</span><span class="ident">spl_token::id</span>())<span class="question-mark">?</span>;
-    <span class="ident">assert_owned_by</span>(<span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>, <span class="kw-2">&amp;</span><span class="ident">spl_token::id</span>())<span class="question-mark">?</span>;
     <span class="ident">assert_signer</span>(<span class="ident">accounts</span>.<span class="ident">bidder</span>)<span class="question-mark">?</span>;
     <span class="ident">assert_signer</span>(<span class="ident">accounts</span>.<span class="ident">payer</span>)<span class="question-mark">?</span>;
     <span class="ident">assert_signer</span>(<span class="ident">accounts</span>.<span class="ident">transfer_authority</span>)<span class="question-mark">?</span>;
@@ -533,31 +538,7 @@
             <span class="ident">accounts</span>.<span class="ident">bidder</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
         ],
     )<span class="question-mark">?</span>;
-
-    <span class="comment">// The account within the pot must be owned by us.</span>
-    <span class="kw">let</span> <span class="ident">actual_account</span>: <span class="ident">Account</span> <span class="op">=</span> <span class="ident">assert_initialized</span>(<span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>)<span class="question-mark">?</span>;
-    <span class="kw">if</span> <span class="ident">actual_account</span>.<span class="ident">owner</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">accounts</span>.<span class="ident">auction</span>.<span class="ident">key</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AuctionError::BidderPotTokenAccountOwnerMismatch</span>.<span class="ident">into</span>());
-    }
-
-    <span class="kw">if</span> <span class="ident">actual_account</span>.<span class="ident">delegate</span> <span class="op">!</span><span class="op">=</span> <span class="ident">COption::None</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AuctionError::DelegateShouldBeNone</span>.<span class="ident">into</span>());
-    }
-
-    <span class="kw">if</span> <span class="ident">actual_account</span>.<span class="ident">close_authority</span> <span class="op">!</span><span class="op">=</span> <span class="ident">COption::None</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AuctionError::CloseAuthorityShouldBeNone</span>.<span class="ident">into</span>());
-    }
-
-    <span class="comment">// Derive and load Auction.</span>
-    <span class="kw">let</span> <span class="ident">auction_bump</span> <span class="op">=</span> <span class="ident">assert_derivation</span>(
-        <span class="ident">program_id</span>,
-        <span class="ident">accounts</span>.<span class="ident">auction</span>,
-        <span class="kw-2">&amp;</span>[
-            <span class="ident">PREFIX</span>.<span class="ident">as_bytes</span>(),
-            <span class="ident">program_id</span>.<span class="ident">as_ref</span>(),
-            <span class="ident">args</span>.<span class="ident">resource</span>.<span class="ident">as_ref</span>(),
-        ],
-    )<span class="question-mark">?</span>;
+    <span class="comment">// The account within the pot must be new</span>
 
     <span class="comment">// Can&#39;t bid on an auction that isn&#39;t running.</span>
     <span class="kw">if</span> <span class="ident">auction</span>.<span class="ident">state</span> <span class="op">!</span><span class="op">=</span> <span class="ident">AuctionState::Started</span> {
@@ -590,12 +571,41 @@
         <span class="ident">pot</span>.<span class="ident">bidder_act</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">accounts</span>.<span class="ident">bidder</span>.<span class="ident">key</span>;
         <span class="ident">pot</span>.<span class="ident">auction_act</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">accounts</span>.<span class="ident">auction</span>.<span class="ident">key</span>;
         <span class="ident">pot</span>.<span class="ident">serialize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">accounts</span>.<span class="ident">bidder_pot</span>.<span class="ident">data</span>.<span class="ident">borrow_mut</span>())<span class="question-mark">?</span>;
+
+        <span class="ident">assert_uninitialized</span>::<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&gt;</span>(<span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">bidder_token_account_bump</span> <span class="op">=</span> <span class="ident">assert_derivation</span>(
+            <span class="ident">program_id</span>,
+            <span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>,
+            <span class="kw-2">&amp;</span>[
+                <span class="ident">PREFIX</span>.<span class="ident">as_bytes</span>(),
+                <span class="kw-2">&amp;</span><span class="ident">accounts</span>.<span class="ident">bidder_pot</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
+                <span class="ident">BIDDER_POT_TOKEN</span>.<span class="ident">as_bytes</span>(),
+            ],
+        )<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">bidder_token_account_seeds</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="ident">PREFIX</span>.<span class="ident">as_bytes</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">accounts</span>.<span class="ident">bidder_pot</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
+            <span class="ident">BIDDER_POT_TOKEN</span>.<span class="ident">as_bytes</span>(),
+            <span class="kw-2">&amp;</span>[<span class="ident">bidder_token_account_bump</span>],
+        ];
+
+        <span class="ident">spl_token_create_account</span>(<span class="ident">TokenCreateAccount</span> {
+            <span class="ident">payer</span>: <span class="ident">accounts</span>.<span class="ident">payer</span>.<span class="ident">clone</span>(),
+            <span class="ident">authority</span>: <span class="ident">accounts</span>.<span class="ident">auction</span>.<span class="ident">clone</span>(),
+            <span class="ident">authority_seeds</span>: <span class="ident">bidder_token_account_seeds</span>,
+            <span class="ident">token_program</span>: <span class="ident">accounts</span>.<span class="ident">token_program</span>.<span class="ident">clone</span>(),
+            <span class="ident">mint</span>: <span class="ident">accounts</span>.<span class="ident">mint</span>.<span class="ident">clone</span>(),
+            <span class="ident">account</span>: <span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>.<span class="ident">clone</span>(),
+            <span class="ident">system_program</span>: <span class="ident">accounts</span>.<span class="ident">system</span>.<span class="ident">clone</span>(),
+            <span class="ident">rent</span>: <span class="ident">accounts</span>.<span class="ident">rent</span>.<span class="ident">clone</span>(),
+        })<span class="question-mark">?</span>;
     } <span class="kw">else</span> {
         <span class="comment">// Already exists, verify that the pot contains the specified SPL address.</span>
         <span class="kw">let</span> <span class="ident">bidder_pot</span> <span class="op">=</span> <span class="ident">BidderPot::from_account_info</span>(<span class="ident">accounts</span>.<span class="ident">bidder_pot</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">bidder_pot</span>.<span class="ident">bidder_pot</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>.<span class="ident">key</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AuctionError::BidderPotTokenAccountOwnerMismatch</span>.<span class="ident">into</span>());
         }
+        <span class="ident">assert_initialized</span>::<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&gt;</span>(<span class="ident">accounts</span>.<span class="ident">bidder_pot_token</span>)<span class="question-mark">?</span>;
     }
 
     <span class="comment">// Update now we have new bid.</span>

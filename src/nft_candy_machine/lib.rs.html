@@ -1078,6 +1078,12 @@
 <span id="1078">1078</span>
 <span id="1079">1079</span>
 <span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
 </pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">utils</span>;
 
 <span class="kw">use</span> {
@@ -1109,6 +1115,7 @@
 };
 <span class="macro">anchor_lang::declare_id!</span>(<span class="string">&quot;cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ&quot;</span>);
 
+<span class="kw">const</span> <span class="ident">EXPIRE_OFFSET</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">10</span> <span class="op">*</span> <span class="number">60</span>;
 <span class="kw">const</span> <span class="ident">PREFIX</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;candy_machine&quot;</span>;
 <span class="attribute">#[<span class="ident">program</span>]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">nft_candy_machine_v2</span> {
@@ -1152,6 +1159,16 @@
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ErrorCode::GatewayTokenMissing</span>.<span class="ident">into</span>());
             }
             <span class="kw">let</span> <span class="ident">gateway_token_info</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">ctx</span>.<span class="ident">remaining_accounts</span>[<span class="ident">remaining_accounts_counter</span>];
+            <span class="kw">let</span> <span class="ident">gateway_token</span> <span class="op">=</span> <span class="ident">::solana_gateway::borsh::try_from_slice_incomplete</span>::<span class="op">&lt;</span>
+                <span class="ident">::solana_gateway::state::GatewayToken</span>,
+            <span class="op">&gt;</span>(<span class="kw-2">*</span><span class="ident">gateway_token_info</span>.<span class="ident">data</span>.<span class="ident">borrow</span>())<span class="question-mark">?</span>;
+            <span class="comment">// stores the expire_time before the verification, since the verification</span>
+            <span class="comment">// will update the expire_time of the token and we won&#39;t be able to</span>
+            <span class="comment">// calculate the creation time</span>
+            <span class="kw">let</span> <span class="ident">expire_time</span> <span class="op">=</span> <span class="ident">gateway_token</span>
+                .<span class="ident">expire_time</span>
+                .<span class="ident">ok_or</span>(<span class="ident">ErrorCode::GatewayTokenExpireTimeInvalid</span>)<span class="question-mark">?</span>
+                <span class="kw">as</span> <span class="ident">i64</span>;
             <span class="ident">remaining_accounts_counter</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="kw">if</span> <span class="ident">gatekeeper</span>.<span class="ident">expire_on_use</span> {
                 <span class="kw">if</span> <span class="ident">ctx</span>.<span class="ident">remaining_accounts</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">remaining_accounts_counter</span> {
@@ -1180,33 +1197,28 @@
             }
             <span class="comment">// verifies that the gatway token was not created before the candy</span>
             <span class="comment">// machine go_live_date (avoids pre-solving the captcha)</span>
-            <span class="kw">let</span> <span class="ident">gateway_token</span> <span class="op">=</span> <span class="ident">::solana_gateway::borsh::try_from_slice_incomplete</span>::<span class="op">&lt;</span>
-                <span class="ident">::solana_gateway::state::GatewayToken</span>,
-            <span class="op">&gt;</span>(<span class="kw-2">*</span><span class="ident">gateway_token_info</span>.<span class="ident">data</span>.<span class="ident">borrow</span>())<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">expire_time</span> <span class="op">=</span> <span class="ident">gateway_token</span>
-                .<span class="ident">expire_time</span>
-                .<span class="ident">ok_or</span>(<span class="ident">ErrorCode::GatewayTokenExpireTimeInvalid</span>)<span class="question-mark">?</span>
-                <span class="kw">as</span> <span class="ident">i64</span>;
             <span class="kw">match</span> <span class="ident">candy_machine</span>.<span class="ident">data</span>.<span class="ident">go_live_date</span> {
                 <span class="prelude-val">Some</span>(<span class="ident">val</span>) =&gt; {
-                    <span class="comment">// Civic f-ed up - expire time is actually the time it was made...</span>
-                    <span class="kw">if</span> <span class="ident">expire_time</span> <span class="op">&lt;</span> <span class="ident">val</span> {
+                    <span class="macro">msg!</span>(
+                        <span class="string">&quot;Comparing token expire time {} and go_live_date {}&quot;</span>,
+                        <span class="ident">expire_time</span>,
+                        <span class="ident">val</span>);
+                    <span class="kw">if</span> (<span class="ident">expire_time</span> <span class="op">-</span> <span class="ident">EXPIRE_OFFSET</span>) <span class="op">&lt;</span> <span class="ident">val</span> {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ws</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">candy_machine</span>.<span class="ident">data</span>.<span class="ident">whitelist_mint_settings</span> {
                             <span class="comment">// when dealing with whitelist, the expire_time can be</span>
                             <span class="comment">// before the go_live_date only if presale enabled</span>
                             <span class="kw">if</span> <span class="op">!</span><span class="ident">ws</span>.<span class="ident">presale</span> {
                                 <span class="macro">msg!</span>(
-                                    <span class="string">&quot;Invalid gateway token expire time: {} compared with go live of {}&quot;</span>,
-                                    <span class="ident">expire_time</span>,
+                                    <span class="string">&quot;Invalid gateway token: calculated creation time {} and go_live_date {}&quot;</span>,
+                                    <span class="ident">expire_time</span> <span class="op">-</span> <span class="ident">EXPIRE_OFFSET</span>,
                                     <span class="ident">val</span>);
                                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ErrorCode::GatewayTokenExpireTimeInvalid</span>.<span class="ident">into</span>());
                             }
                         } <span class="kw">else</span> {
                             <span class="macro">msg!</span>(
-                                <span class="string">&quot;Invalid gateway token expire time: {} compared with go live of {}&quot;</span>,
-                                <span class="ident">expire_time</span>,
-                                <span class="ident">val</span>
-                            );
+                                <span class="string">&quot;Invalid gateway token: calculated creation time {} and go_live_date {}&quot;</span>,
+                                <span class="ident">expire_time</span> <span class="op">-</span> <span class="ident">EXPIRE_OFFSET</span>,
+                                <span class="ident">val</span>);
                             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ErrorCode::GatewayTokenExpireTimeInvalid</span>.<span class="ident">into</span>());
                         }
                     }
