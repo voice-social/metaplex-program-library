@@ -4,6 +4,8 @@ target/
 **/.DS_Store
 .anchor/
 
+Cargo.lock
+
 node_modules/
 **/*.rs.bk
 build/
