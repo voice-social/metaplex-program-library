@@ -10,6 +10,7 @@ const programIds = {
   auction: 'auctxRXPeJoc4817jDhf4HbjnhEcr1cCXenosMhK5R8',
   metaplex: 'p1exdMJcjVao65QdewkaZRUnU6VPSXhus9n2GzWfh98',
   membershipToken: 'EHE2kYEETZbRfhQoNtknbnqrrpKEojbohSagkGdiJ6wm',
+  gumdrop: 'gdrpGjVffourzkdDRrQmySw4aTHr8a3xmQzzxSwFD1a',
 };
 
 function localDeployPath(programName) {
@@ -19,11 +20,12 @@ const programs = {
   metadata: { programId: programIds.metadata, deployPath: localDeployPath('mpl_token_metadata') },
   vault: { programId: programIds.vault, deployPath: localDeployPath('mpl_token_vault') },
   auction: { programId: programIds.auction, deployPath: localDeployPath('mpl_auction') },
-  metaplex: { programId: programIds.mpl, deployPath: localDeployPath('mpl_metaplex') },
+  metaplex: { programId: programIds.metaplex, deployPath: localDeployPath('mpl_metaplex') },
   membershipToken: {
     programId: programIds.membershipToken,
     deployPath: localDeployPath('mpl_membership_token'),
   },
+  gumdrop: { programId: programIds.gumdrop, deployPath: localDeployPath('mpl_gumdrop') },
 };
 
 const validator = {
