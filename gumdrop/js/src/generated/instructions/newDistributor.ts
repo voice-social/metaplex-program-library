@@ -7,7 +7,7 @@ export type NewDistributorInstructionArgs = {
   root: number[] /* size: 32 */;
   temporal: web3.PublicKey;
 };
-const newDistributorStruct = new beet.FixableBeetArgsStruct<
+const newDistributorStruct = new beet.BeetArgsStruct<
   NewDistributorInstructionArgs & {
     instructionDiscriminator: number[];
   }

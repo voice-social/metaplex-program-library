@@ -64,36 +64,34 @@ export class MerkleDistributorAccountData implements MerkleDistributorAccountDat
 
   /**
    * Returns the byteSize of a {@link Buffer} holding the serialized data of
-   * {@link MerkleDistributorAccountData} for the provided args.
-   *
-   * @param args need to be provided since the byte size for this account
-   * depends on them
+   * {@link MerkleDistributorAccountData}
    */
-  static byteSize(args: MerkleDistributorAccountDataArgs) {
-    const instance = MerkleDistributorAccountData.fromArgs(args);
-    return merkleDistributorAccountDataStruct.toFixedFromValue({
-      accountDiscriminator: merkleDistributorAccountDiscriminator,
-      ...instance,
-    }).byteSize;
+  static get byteSize() {
+    return merkleDistributorAccountDataStruct.byteSize;
   }
 
   /**
    * Fetches the minimum balance needed to exempt an account holding
    * {@link MerkleDistributorAccountData} data from rent
    *
-   * @param args need to be provided since the byte size for this account
-   * depends on them
    * @param connection used to retrieve the rent exemption information
    */
   static async getMinimumBalanceForRentExemption(
-    args: MerkleDistributorAccountDataArgs,
     connection: web3.Connection,
     commitment?: web3.Commitment,
   ): Promise<number> {
     return connection.getMinimumBalanceForRentExemption(
-      MerkleDistributorAccountData.byteSize(args),
+      MerkleDistributorAccountData.byteSize,
       commitment,
     );
+  }
+
+  /**
+   * Determines if the provided {@link Buffer} has the correct byte size to
+   * hold {@link MerkleDistributorAccountData} data.
+   */
+  static hasCorrectByteSize(buf: Buffer, offset = 0) {
+    return buf.byteLength - offset === MerkleDistributorAccountData.byteSize;
   }
 
   /**
@@ -110,7 +108,7 @@ export class MerkleDistributorAccountData implements MerkleDistributorAccountDat
   }
 }
 
-const merkleDistributorAccountDataStruct = new beet.FixableBeetStruct<
+const merkleDistributorAccountDataStruct = new beet.BeetStruct<
   MerkleDistributorAccountData,
   MerkleDistributorAccountDataArgs & {
     accountDiscriminator: number[];
