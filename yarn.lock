@@ -972,6 +972,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@metaplex-foundation/beet-solana@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@metaplex-foundation/beet-solana@npm:0.0.5"
+  dependencies:
+    "@metaplex-foundation/beet": ^0.0.5
+    "@solana/web3.js": ^1.31.0
+  checksum: 14747464fefff430471c822b602bd3781bb45713ab91009475aa62604efc3166d22b26fef490f83466222008de5039788de98f43c9b854c0e376079a83e14248
+  languageName: node
+  linkType: hard
+
 "@metaplex-foundation/beet@npm:*":
   version: 0.0.2
   resolution: "@metaplex-foundation/beet@npm:0.0.2"
@@ -1006,6 +1016,17 @@ __metadata:
     debug: ^4.3.3
     text-encoding-utf-8: ^1.0.2
   checksum: 76dff12aabbd7b7c10dc940c696499ee6c4ab993a54accd9ed7a4c6f6f00f24d3084a941c4bcf36397fb7706e13f6598cbaab42b98b3a4ef1b8a0c513a916823
+  languageName: node
+  linkType: hard
+
+"@metaplex-foundation/beet@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@metaplex-foundation/beet@npm:0.0.5"
+  dependencies:
+    ansicolors: ^0.3.2
+    bn.js: ^5.2.0
+    debug: ^4.3.3
+  checksum: 58aa6c654023e867420f3df29333e775c9ce04850a5e87936e16831eeb7aa49a1125120daaff06adbaac1a528713475baaa396df09c1f7d20f044eec55f0b840
   languageName: node
   linkType: hard
 
@@ -1088,8 +1109,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@metaplex-foundation/mpl-gumdrop@workspace:gumdrop/js"
   dependencies:
-    "@metaplex-foundation/beet": ^0.0.1
-    "@metaplex-foundation/beet-solana": ^0.0.1
+    "@metaplex-foundation/beet": ^0.0.5
+    "@metaplex-foundation/beet-solana": ^0.0.5
+    "@metaplex-foundation/solita": ^0.0.1
     "@solana/web3.js": ^1.31.0
     "@types/tape": ^4.13.2
     eslint: ^8.3.0
@@ -1189,6 +1211,23 @@ __metadata:
     rimraf: ^3.0.2
   languageName: unknown
   linkType: soft
+
+"@metaplex-foundation/solita@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@metaplex-foundation/solita@npm:0.0.1"
+  dependencies:
+    "@metaplex-foundation/beet": ^0.0.5
+    "@metaplex-foundation/beet-solana": ^0.0.5
+    "@solana/web3.js": ^1.31.0
+    camelcase: ^6.2.1
+    debug: ^4.3.3
+    js-sha256: ^0.9.0
+    prettier: ^2.5.1
+    snake-case: ^3.0.4
+    spok: ^1.4.3
+  checksum: 21a626c092da47de8ce3f8e7fd1e9d95965fb441128021a0b41ae50449e831334f830c076fea158e19c5f70178088f3dfbb7d31c82efc1aab4f775986c9b844d
+  languageName: node
+  linkType: hard
 
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
@@ -2409,7 +2448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^6.0.0":
+"camelcase@npm:^6.0.0, camelcase@npm:^6.2.1":
   version: 6.3.0
   resolution: "camelcase@npm:6.3.0"
   checksum: 8c96818a9076434998511251dcb2761a94817ea17dbdc37f47ac080bd088fc62c7369429a19e2178b993497132c8cbcf5cc1f44ba963e76782ba469c0474938d
