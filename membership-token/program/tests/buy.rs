@@ -31,7 +31,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -303,7 +312,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -561,7 +579,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -822,7 +849,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -1021,6 +1057,7 @@ mod buy {
         let accounts = mpl_membership_token_accounts::CloseMarket {
             market: market_keypair.pubkey(),
             owner: selling_resource_owner_keypair.pubkey(),
+            clock: sysvar::clock::id(),
         }
         .to_account_metas(None);
 
@@ -1103,7 +1140,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -1188,6 +1234,8 @@ mod buy {
         );
 
         context.banks_client.process_transaction(tx).await.unwrap();
+
+        wait(&mut context, chrono::Duration::seconds(1)).await;
 
         // Buy setup
         let selling_resource_data = context
@@ -1383,7 +1431,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
@@ -1652,7 +1709,16 @@ mod buy {
         let (admin_wallet, store_keypair) = setup_store(&mut context).await;
 
         let (selling_resource_keypair, selling_resource_owner_keypair, _vault) =
-            setup_selling_resource(&mut context, &admin_wallet, &store_keypair).await;
+            setup_selling_resource(
+                &mut context,
+                &admin_wallet,
+                &store_keypair,
+                100,
+                None,
+                true,
+                false,
+            )
+            .await;
 
         airdrop(
             &mut context,
